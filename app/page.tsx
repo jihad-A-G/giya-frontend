@@ -91,12 +91,15 @@ export default function Home() {
             // Parse features and take first 3 products
             const parsedProducts = productsData.slice(0, 3).map((product: Product) => {
               try {
+                // eslint-disable-next-line @typescript-eslint/no-explicit-any
+                const productAny = product as any;
                 return {
                   ...product,
-                  features: typeof (product as { features?: string | string[] }).features === 'string' ? JSON.parse((product as { features: string }).features) : (product as { features?: string[] }).features || []
+                  features: typeof productAny.features === 'string' ? JSON.parse(productAny.features) : productAny.features || []
                 };
               } catch (error) {
-                console.error('Error parsing features for product:', (product as { _id: string })._id, error);
+                // eslint-disable-next-line @typescript-eslint/no-explicit-any
+                console.error('Error parsing features for product:', (product as any)._id, error);
                 return {
                   ...product,
                   features: []
@@ -377,7 +380,7 @@ export default function Home() {
               ) : (
                 featuredProducts.map((product, index) => (
                   <motion.div
-                    key={product.id}
+                    key={(product as { _id: string })._id}
                     ref={(el) => {
                       if (el) cardRefs.current[index] = el;
                     }}
@@ -514,7 +517,7 @@ export default function Home() {
               ) : (
                 featuredProjects.map((project, index) => (
                   <motion.div
-                    key={project.id}
+                    key={(project as { _id: string })._id}
                     ref={(el) => {
                       if (el) projectCardRefs.current[index] = el;
                     }}
