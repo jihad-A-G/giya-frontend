@@ -3,10 +3,11 @@ import { fetchFromBackend } from '@/lib/api';
 
 export async function GET(
   request: NextRequest,
-  { params }: { params: { id: string } }
+  { params }: { params: Promise<{ id: string }> }
 ) {
   try {
-    const response = await fetchFromBackend(`/api/testimonials/${params.id}`);
+    const { id } = await params;
+    const response = await fetchFromBackend(`/api/testimonials/${id}`);
     const data = await response.json();
 
     if (!response.ok) {
@@ -22,13 +23,14 @@ export async function GET(
 
 export async function PUT(
   request: NextRequest,
-  { params }: { params: { id: string } }
+  { params }: { params: Promise<{ id: string }> }
 ) {
   try {
+    const { id } = await params;
     const body = await request.json();
     const authHeader = request.headers.get('authorization');
     
-    const response = await fetchFromBackend(`/api/testimonials/${params.id}`, {
+    const response = await fetchFromBackend(`/api/testimonials/${id}`, {
       method: 'PUT',
       headers: {
         'Authorization': authHeader || '',
@@ -51,12 +53,13 @@ export async function PUT(
 
 export async function DELETE(
   request: NextRequest,
-  { params }: { params: { id: string } }
+  { params }: { params: Promise<{ id: string }> }
 ) {
   try {
+    const { id } = await params;
     const authHeader = request.headers.get('authorization');
     
-    const response = await fetchFromBackend(`/api/testimonials/${params.id}`, {
+    const response = await fetchFromBackend(`/api/testimonials/${id}`, {
       method: 'DELETE',
       headers: {
         'Authorization': authHeader || '',
