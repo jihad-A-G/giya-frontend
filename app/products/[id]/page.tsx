@@ -140,7 +140,6 @@ export default function ProductDetail() {
                 <Image
                   src={displayImages[selectedImage]}
                   alt={product.name}
-                  fill
                   className="object-cover"
                   priority
                 />
@@ -163,7 +162,6 @@ export default function ProductDetail() {
                     <Image
                       src={img}
                       alt={`${product.name} view ${index + 1}`}
-                      fill
                       className="object-cover"
                     />
                   </motion.div>
