@@ -357,7 +357,7 @@ export default function Projects() {
           >
             <h2 className="text-4xl font-bold text-white mb-6">Ready to Start Your Project?</h2>
             <p className="text-xl text-white mb-8 max-w-2xl mx-auto">
-              Let's discuss your vision and create something extraordinary together.
+              Let&apos;s discuss your vision and create something extraordinary together.
               Contact us for a free consultation and project quote.
             </p>
             <div className="flex gap-4 justify-center">

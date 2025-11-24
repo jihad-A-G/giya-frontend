@@ -199,7 +199,7 @@ export default function Contact() {
             >
               <h2 className="text-3xl font-bold text-gray-800 mb-6">Send Us a Message</h2>
               <p className="text-gray-600 mb-8">
-                Fill out the form below and we'll get back to you within 24 hours. 
+                Fill out the form below and we&apos;ll get back to you within 24 hours. 
                 For urgent inquiries, please call us directly.
               </p>
               
@@ -411,8 +411,8 @@ export default function Contact() {
           >
             <h2 className="text-4xl font-bold text-white mb-6">Ready to Get Started?</h2>
             <p className="text-xl text-white mb-8 max-w-2xl mx-auto">
-              Don't wait to transform your space. Schedule a free consultation today 
-              and let's bring your vision to life.
+              Don&apos;t wait to transform your space. Schedule a free consultation today 
+              and let&apos;s bring your vision to life.
             </p>
             <div className="flex gap-4 justify-center">
               <button className="bg-white px-8 py-3 rounded-md font-semibold hover:bg-gray-100 transition-colors duration-200" style={{ color: '#a45a52' }}>

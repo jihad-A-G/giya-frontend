@@ -89,14 +89,14 @@ export default function Home() {
           
           if (productsData && productsData.length > 0) {
             // Parse features and take first 3 products
-            const parsedProducts = productsData.slice(0, 3).map((product: any) => {
+            const parsedProducts = productsData.slice(0, 3).map((product: Product) => {
               try {
                 return {
                   ...product,
-                  features: typeof product.features === 'string' ? JSON.parse(product.features) : product.features || []
+                  features: typeof (product as { features?: string | string[] }).features === 'string' ? JSON.parse((product as { features: string }).features) : (product as { features?: string[] }).features || []
                 };
               } catch (error) {
-                console.error('Error parsing features for product:', product.id, error);
+                console.error('Error parsing features for product:', (product as { _id: string })._id, error);
                 return {
                   ...product,
                   features: []
@@ -497,7 +497,7 @@ export default function Home() {
           >
             <h2 className="text-4xl font-bold text-center mb-4 text-gray-800">Featured Projects</h2>
             <p className="text-lg text-center mb-12 text-gray-600 max-w-3xl mx-auto">
-              Discover how we've transformed spaces with our furniture and interior design expertise.
+              Discover how we&apos;ve transformed spaces with our furniture and interior design expertise.
             </p>
           </motion.div>
 

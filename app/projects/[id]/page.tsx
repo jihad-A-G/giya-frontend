@@ -20,7 +20,7 @@ interface Project {
   description: string;
   services: string[];
   highlights: string[];
-  stats: Record<string, any>;
+  stats: Record<string, string>;
   client: string | null;
   budget: string | null;
 }

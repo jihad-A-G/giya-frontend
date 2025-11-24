@@ -299,7 +299,7 @@ export default function Services() {
           >
             <h2 className="text-4xl font-bold text-gray-800 mb-6">What Our Clients Say</h2>
             <p className="text-xl text-gray-600 max-w-3xl mx-auto">
-              Don't just take our word for it. Here's what our satisfied clients have to say about our services.
+              Don&apos;t just take our word for it. Here&apos;s what our satisfied clients have to say about our services.
             </p>
           </motion.div>
 
@@ -324,7 +324,7 @@ export default function Services() {
                       <span key={i} className="text-xl" style={{ color: '#a45a52' }}>★</span>
                     ))}
                   </div>
-                  <p className="text-gray-600 mb-4 italic">"{testimonial.content}"</p>
+                  <p className="text-gray-600 mb-4 italic">&quot;{testimonial.content}&quot;</p>
                   <div>
                     <p className="font-semibold text-gray-800">{testimonial.name}</p>
                     <p className="text-gray-500 text-sm">{testimonial.role}</p>

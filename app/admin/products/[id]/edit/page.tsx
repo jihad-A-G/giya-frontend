@@ -21,7 +21,7 @@ interface Product {
   sizes?: string[];
   colors?: string[];
   availability?: string;
-  specifications?: Record<string, any>;
+  specifications?: Record<string, string>;
 }
 
 export default function EditProduct() {
