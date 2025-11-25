@@ -390,12 +390,44 @@ export default function Home() {
                         : 'opacity-0 scale-95'
                     } hover:scale-105`}
                     whileHover={{ y: -10 }}
+                    style={{ position: 'relative', overflow: 'hidden' }}
+                    onMouseEnter={(e) => {
+                      const shimmer = document.createElement('div');
+                      shimmer.style.cssText = `
+                        position: absolute;
+                        top: -50%;
+                        left: -50%;
+                        width: 200%;
+                        height: 200%;
+                        background: linear-gradient(45deg, transparent 30%, rgba(255, 255, 255, 0.8) 50%, transparent 70%);
+                        animation: shimmer 0.8s;
+                        pointer-events: none;
+                        z-index: 10;
+                      `;
+                      const style = document.createElement('style');
+                      style.textContent = '@keyframes shimmer { 0% { transform: translate(-100%, -100%); } 100% { transform: translate(100%, 100%); } }';
+                      if (!document.querySelector('#shimmer-animation')) {
+                        style.id = 'shimmer-animation';
+                        document.head.appendChild(style);
+                      }
+                      e.currentTarget.appendChild(shimmer);
+                      setTimeout(() => shimmer.remove(), 800);
+                    }}
                   >
                     <div className="w-full h-48 rounded-lg mb-4 overflow-hidden relative">
                       <img
                         src={`${API_URL}${product.image}`}
                         alt={product.name}
                         className="w-full h-full object-cover rounded-lg"
+                        style={{
+                          transition: 'transform 0.3s ease',
+                        }}
+                        onMouseEnter={(e) => {
+                          (e.currentTarget as HTMLImageElement).style.transform = 'scale(1.1)';
+                        }}
+                        onMouseLeave={(e) => {
+                          (e.currentTarget as HTMLImageElement).style.transform = 'scale(1)';
+                        }}
                       />
                     </div>
                     <h3 className="text-2xl font-semibold mb-3 text-gray-800">{product.name}</h3>
@@ -525,6 +557,29 @@ export default function Home() {
                         : 'opacity-0 scale-95'
                     }`}
                     whileHover={{ y: -10 }}
+                    style={{ position: 'relative' }}
+                    onMouseEnter={(e) => {
+                      const shimmer = document.createElement('div');
+                      shimmer.style.cssText = `
+                        position: absolute;
+                        top: -50%;
+                        left: -50%;
+                        width: 200%;
+                        height: 200%;
+                        background: linear-gradient(45deg, transparent 30%, rgba(255, 255, 255, 0.9) 50%, transparent 70%);
+                        animation: shimmer 0.8s;
+                        pointer-events: none;
+                        z-index: 10;
+                      `;
+                      const style = document.createElement('style');
+                      style.textContent = '@keyframes shimmer { 0% { transform: translate(-100%, -100%); } 100% { transform: translate(100%, 100%); } }';
+                      if (!document.querySelector('#shimmer-animation')) {
+                        style.id = 'shimmer-animation';
+                        document.head.appendChild(style);
+                      }
+                      e.currentTarget.appendChild(shimmer);
+                      setTimeout(() => shimmer.remove(), 800);
+                    }}
                   >
                     <div className="relative group cursor-pointer">
                       <div className="w-full h-64 relative">
@@ -532,6 +587,15 @@ export default function Home() {
                           src={`${API_URL}${project.image}`}
                           alt={project.title}
                           className="w-full h-full object-cover"
+                          style={{
+                            transition: 'transform 0.3s ease',
+                          }}
+                          onMouseEnter={(e) => {
+                            (e.currentTarget as HTMLImageElement).style.transform = 'scale(1.1)';
+                          }}
+                          onMouseLeave={(e) => {
+                            (e.currentTarget as HTMLImageElement).style.transform = 'scale(1)';
+                          }}
                         />
                       </div>
                       <div className="absolute inset-0 bg-black opacity-0 group-hover:opacity-70 transition-all duration-300 flex items-center justify-center">
