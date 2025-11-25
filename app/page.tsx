@@ -392,12 +392,10 @@ export default function Home() {
                     whileHover={{ y: -10 }}
                   >
                     <div className="w-full h-48 rounded-lg mb-4 overflow-hidden relative">
-                      <Image
+                      <img
                         src={`${API_URL}${product.image}`}
                         alt={product.name}
-                        fill
-                        sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
-                        className="object-cover rounded-lg"
+                        className="w-full h-full object-cover rounded-lg"
                       />
                     </div>
                     <h3 className="text-2xl font-semibold mb-3 text-gray-800">{product.name}</h3>
@@ -530,12 +528,10 @@ export default function Home() {
                   >
                     <div className="relative group cursor-pointer">
                       <div className="w-full h-64 relative">
-                        <Image
+                        <img
                           src={`${API_URL}${project.image}`}
                           alt={project.title}
-                          fill
-                          sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
-                          className="object-cover"
+                          className="w-full h-full object-cover"
                         />
                       </div>
                       <div className="absolute inset-0 bg-black opacity-0 group-hover:opacity-70 transition-all duration-300 flex items-center justify-center">

@@ -11,17 +11,17 @@ const API_URL = process.env.NEXT_PUBLIC_API_URL || 'http://localhost:5000';
 interface Product {
   _id: string;
   name: string;
-  category: string;
-  price: string;
-  image: string;
-  images: string[];
-  video?: string;
-  description: string;
-  features: string[];
-  sizes: string[];
-  colors: string[];
-  availability: string;
-  specifications: Record<string, string>;
+  category?: string | null;
+  price?: string | null;
+  image?: string | null;
+  images?: string[] | null;
+  video?: string | null;
+  description?: string | null;
+  features?: string[] | null;
+  sizes?: string[] | null;
+  colors?: string[] | null;
+  availability?: string | null;
+  specifications?: Record<string, string> | null;
 }
 
 export default function ProductDetail() {
@@ -46,10 +46,10 @@ export default function ProductDetail() {
         setProduct(data);
         
         // Set default selections
-        if (data.sizes && data.sizes.length > 0) {
+        if (data.sizes && Array.isArray(data.sizes) && data.sizes.length > 0) {
           setSelectedSize(data.sizes[0]);
         }
-        if (data.colors && data.colors.length > 0) {
+        if (data.colors && Array.isArray(data.colors) && data.colors.length > 0) {
           setSelectedColor(data.colors[0]);
         }
         
@@ -92,9 +92,9 @@ export default function ProductDetail() {
     );
   }
 
-  const displayImages = product.images.length > 0 
+  const displayImages = product.images && Array.isArray(product.images) && product.images.length > 0 
     ? product.images.map(img => `${API_URL}${img}`)
-    : [`${API_URL}${product.image}`];
+    : product.image ? [`${API_URL}${product.image}`] : [];
   const availabilityColors = {
     'in-stock': 'text-green-600',
     'out-of-stock': 'text-red-600',
@@ -137,12 +137,13 @@ export default function ProductDetail() {
               className="bg-white rounded-lg shadow-lg overflow-hidden mb-4"
             >
               <div className="relative h-96 md:h-[500px]">
-                <Image
-                  src={displayImages[selectedImage]}
-                  alt={product.name}
-                  className="object-cover"
-                  priority
-                />
+                {displayImages.length > 0 && (
+                  <img
+                    src={displayImages[selectedImage]}
+                    alt={product.name}
+                    className="w-full h-full object-cover"
+                  />
+                )}
               </div>
             </motion.div>
 
@@ -159,10 +160,10 @@ export default function ProductDetail() {
                       selectedImage === index ? 'border-[#a45a52]' : 'border-gray-200'
                     }`}
                   >
-                    <Image
+                    <img
                       src={img}
                       alt={`${product.name} view ${index + 1}`}
-                      className="object-cover"
+                      className="w-full h-full object-cover"
                     />
                   </motion.div>
                 ))}
@@ -180,7 +181,7 @@ export default function ProductDetail() {
                 <video
                   controls
                   className="w-full h-64 md:h-80"
-                  poster={product.image}
+                  poster={product.image || undefined}
                 >
                   <source src={product.video} type="video/mp4" />
                   Your browser does not support the video tag.
@@ -199,17 +200,19 @@ export default function ProductDetail() {
               {/* Product Name and Price */}
               <h1 className="text-4xl font-bold text-gray-800 mb-4">{product.name}</h1>
               <div className="flex items-center justify-between mb-6">
-                <p className="text-4xl font-bold" style={{ color: '#a45a52' }}>{product.price}</p>
-                <span className={`text-lg font-semibold ${availabilityColors[product.availability as keyof typeof availabilityColors]}`}>
-                  {availabilityText[product.availability as keyof typeof availabilityText]}
-                </span>
+                {product.price && <p className="text-4xl font-bold" style={{ color: '#a45a52' }}>{product.price}</p>}
+                {product.availability && (
+                  <span className={`text-lg font-semibold ${availabilityColors[product.availability as keyof typeof availabilityColors]}`}>
+                    {availabilityText[product.availability as keyof typeof availabilityText]}
+                  </span>
+                )}
               </div>
 
               {/* Description */}
-              <p className="text-gray-600 text-lg mb-8 leading-relaxed">{product.description}</p>
+              {product.description && <p className="text-gray-600 text-lg mb-8 leading-relaxed">{product.description}</p>}
 
               {/* Size Selection */}
-              {product.sizes.length > 0 && (
+              {product.sizes && Array.isArray(product.sizes) && product.sizes.length > 0 && (
                 <div className="mb-6">
                   <h3 className="text-lg font-semibold text-gray-800 mb-3">Select Size:</h3>
                   <div className="flex flex-wrap gap-3">
@@ -232,7 +235,7 @@ export default function ProductDetail() {
               )}
 
               {/* Color Selection */}
-              {product.colors.length > 0 && (
+              {product.colors && Array.isArray(product.colors) && product.colors.length > 0 && (
                 <div className="mb-8">
                   <h3 className="text-lg font-semibold text-gray-800 mb-3">Select Color:</h3>
                   <div className="flex flex-wrap gap-3">
@@ -272,22 +275,24 @@ export default function ProductDetail() {
               </div>
 
               {/* Features */}
-              <div className="bg-white rounded-lg shadow-md p-6 mb-6">
-                <h3 className="text-xl font-semibold text-gray-800 mb-4">Key Features:</h3>
-                <ul className="space-y-3">
-                  {product.features.map((feature, index) => (
+              {product.features && Array.isArray(product.features) && product.features.length > 0 && (
+                <div className="bg-white rounded-lg shadow-md p-6 mb-6">
+                  <h3 className="text-xl font-semibold text-gray-800 mb-4">Key Features:</h3>
+                  <ul className="space-y-3">
+                    {product.features.map((feature, index) => (
                     <li key={index} className="flex items-center text-gray-700">
                       <svg className="w-5 h-5 mr-3" style={{ color: '#a45a52' }} fill="currentColor" viewBox="0 0 20 20">
                         <path fillRule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clipRule="evenodd" />
                       </svg>
                       {feature}
                     </li>
-                  ))}
-                </ul>
-              </div>
+                    ))}
+                  </ul>
+                </div>
+              )}
 
               {/* Specifications */}
-              {Object.keys(product.specifications).length > 0 && (
+              {product.specifications && Object.keys(product.specifications).length > 0 && (
                 <div className="bg-white rounded-lg shadow-md p-6">
                   <h3 className="text-xl font-semibold text-gray-800 mb-4">Specifications:</h3>
                   <div className="space-y-3">
