@@ -4,6 +4,9 @@ This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-
 
 A modern furniture and interior design platform built with Next.js 15, featuring a complete admin panel for managing products, projects, services, and testimonials.
 
+**Backend**: Deployed on Render.com  
+**Frontend**: Deployed on Vercel
+
 ## Getting Started
 
 First, run the development server:
