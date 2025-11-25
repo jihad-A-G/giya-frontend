@@ -392,26 +392,63 @@ export default function Home() {
                     whileHover={{ y: -10 }}
                     style={{ position: 'relative', overflow: 'hidden' }}
                     onMouseEnter={(e) => {
-                      const shimmer = document.createElement('div');
-                      shimmer.style.cssText = `
+                      const target = e.currentTarget as HTMLElement;
+                      if (target.dataset.shimmered) return;
+                      target.dataset.shimmered = 'true';
+
+                      const shimmer1 = document.createElement('div');
+                      shimmer1.style.cssText = `
                         position: absolute;
-                        top: -50%;
-                        left: -50%;
-                        width: 200%;
-                        height: 200%;
-                        background: linear-gradient(45deg, transparent 30%, rgba(255, 255, 255, 0.8) 50%, transparent 70%);
-                        animation: shimmer 0.8s;
+                        top: -100%;
+                        left: -100%;
+                        width: 100%;
+                        height: 100%;
+                        background: linear-gradient(135deg, transparent 0%, rgba(255, 255, 255, 0.4) 50%, transparent 100%);
+                        animation: shimmerTopLeft 1s ease-out;
                         pointer-events: none;
                         z-index: 10;
                       `;
+
+                      const shimmer2 = document.createElement('div');
+                      shimmer2.style.cssText = `
+                        position: absolute;
+                        bottom: -100%;
+                        right: -100%;
+                        width: 100%;
+                        height: 100%;
+                        background: linear-gradient(135deg, transparent 0%, rgba(255, 255, 255, 0.4) 50%, transparent 100%);
+                        animation: shimmerBottomRight 1s ease-out;
+                        pointer-events: none;
+                        z-index: 10;
+                      `;
+
                       const style = document.createElement('style');
-                      style.textContent = '@keyframes shimmer { 0% { transform: translate(-100%, -100%); } 100% { transform: translate(100%, 100%); } }';
-                      if (!document.querySelector('#shimmer-animation')) {
-                        style.id = 'shimmer-animation';
+                      style.textContent = `
+                        @keyframes shimmerTopLeft {
+                          0% { transform: translate(0, 0); }
+                          100% { transform: translate(150%, 150%); }
+                        }
+                        @keyframes shimmerBottomRight {
+                          0% { transform: translate(0, 0); }
+                          100% { transform: translate(-150%, -150%); }
+                        }
+                      `;
+                      if (!document.querySelector('#shimmer-dual-animation')) {
+                        style.id = 'shimmer-dual-animation';
                         document.head.appendChild(style);
                       }
-                      e.currentTarget.appendChild(shimmer);
-                      setTimeout(() => shimmer.remove(), 800);
+
+                      target.appendChild(shimmer1);
+                      target.appendChild(shimmer2);
+                      
+                      setTimeout(() => {
+                        shimmer1.remove();
+                        shimmer2.remove();
+                      }, 1000);
+                    }}
+                    onMouseLeave={(e) => {
+                      const target = e.currentTarget as HTMLElement;
+                      delete target.dataset.shimmered;
                     }}
                   >
                     <div className="w-full h-48 rounded-lg mb-4 overflow-hidden relative">
@@ -559,29 +596,66 @@ export default function Home() {
                     whileHover={{ y: -10 }}
                     style={{ position: 'relative' }}
                     onMouseEnter={(e) => {
-                      const shimmer = document.createElement('div');
-                      shimmer.style.cssText = `
+                      const target = e.currentTarget as HTMLElement;
+                      if (target.dataset.shimmered) return;
+                      target.dataset.shimmered = 'true';
+
+                      const shimmer1 = document.createElement('div');
+                      shimmer1.style.cssText = `
                         position: absolute;
-                        top: -50%;
-                        left: -50%;
-                        width: 200%;
-                        height: 200%;
-                        background: linear-gradient(45deg, transparent 30%, rgba(255, 255, 255, 0.9) 50%, transparent 70%);
-                        animation: shimmer 0.8s;
+                        top: -100%;
+                        left: -100%;
+                        width: 100%;
+                        height: 100%;
+                        background: linear-gradient(135deg, transparent 0%, rgba(255, 255, 255, 0.4) 50%, transparent 100%);
+                        animation: shimmerTopLeft 1s ease-out;
                         pointer-events: none;
                         z-index: 10;
                       `;
+
+                      const shimmer2 = document.createElement('div');
+                      shimmer2.style.cssText = `
+                        position: absolute;
+                        bottom: -100%;
+                        right: -100%;
+                        width: 100%;
+                        height: 100%;
+                        background: linear-gradient(135deg, transparent 0%, rgba(255, 255, 255, 0.4) 50%, transparent 100%);
+                        animation: shimmerBottomRight 1s ease-out;
+                        pointer-events: none;
+                        z-index: 10;
+                      `;
+
                       const style = document.createElement('style');
-                      style.textContent = '@keyframes shimmer { 0% { transform: translate(-100%, -100%); } 100% { transform: translate(100%, 100%); } }';
-                      if (!document.querySelector('#shimmer-animation')) {
-                        style.id = 'shimmer-animation';
+                      style.textContent = `
+                        @keyframes shimmerTopLeft {
+                          0% { transform: translate(0, 0); }
+                          100% { transform: translate(150%, 150%); }
+                        }
+                        @keyframes shimmerBottomRight {
+                          0% { transform: translate(0, 0); }
+                          100% { transform: translate(-150%, -150%); }
+                        }
+                      `;
+                      if (!document.querySelector('#shimmer-dual-animation')) {
+                        style.id = 'shimmer-dual-animation';
                         document.head.appendChild(style);
                       }
-                      e.currentTarget.appendChild(shimmer);
-                      setTimeout(() => shimmer.remove(), 800);
+
+                      target.appendChild(shimmer1);
+                      target.appendChild(shimmer2);
+                      
+                      setTimeout(() => {
+                        shimmer1.remove();
+                        shimmer2.remove();
+                      }, 1000);
+                    }}
+                    onMouseLeave={(e) => {
+                      const target = e.currentTarget as HTMLElement;
+                      delete target.dataset.shimmered;
                     }}
                   >
-                    <div className="relative group cursor-pointer">
+                    <Link href="/projects" className="relative group cursor-pointer block">
                       <div className="w-full h-64 relative">
                         <img
                           src={`${API_URL}${project.image}`}
@@ -604,7 +678,7 @@ export default function Home() {
                           <p className="text-sm">Click to view project details</p>
                         </div>
                       </div>
-                    </div>
+                    </Link>
                   </motion.div>
                 ))
               )}
