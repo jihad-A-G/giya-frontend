@@ -197,7 +197,7 @@ export default function ProductDetail() {
               animate={{ opacity: 1, x: 0 }}
               transition={{ duration: 0.5 }}
             >
-              {/* Product Name and Price */}
+              {/* Product Name and Price  */}
               <h1 className="text-4xl font-bold text-gray-800 mb-4">{product.name}</h1>
               <div className="flex items-center justify-between mb-6">
                 {product.price && <p className="text-4xl font-bold" style={{ color: '#a45a52' }}>{product.price}</p>}
