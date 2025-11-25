@@ -217,11 +217,11 @@ function ProductsContent() {
                   onClick={() => window.location.href = `/products/${product._id}`}
                 >
                   {/* Product Image */}
-                  <div className="h-48 relative overflow-hidden rounded-t-lg\">
+                  <div className="h-48 relative overflow-hidden rounded-t-lg">
                     <img
                       src={`${API_URL}${product.image}`}
                       alt={product.name}
-                      className=\"w-full h-full object-cover\"
+                      className="w-full h-full object-cover"
                     />
                   </div>
 
