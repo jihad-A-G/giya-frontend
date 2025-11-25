@@ -399,38 +399,44 @@ export default function Home() {
                       const shimmer1 = document.createElement('div');
                       shimmer1.style.cssText = `
                         position: absolute;
-                        top: -100%;
-                        left: -100%;
-                        width: 100%;
-                        height: 100%;
-                        background: linear-gradient(135deg, transparent 0%, rgba(255, 255, 255, 0.4) 50%, transparent 100%);
-                        animation: shimmerTopLeft 1s ease-out;
+                        top: -50%;
+                        left: -50%;
+                        width: 80%;
+                        height: 80%;
+                        background: radial-gradient(ellipse at center, rgba(255, 255, 255, 0.6) 0%, rgba(255, 255, 255, 0.3) 30%, transparent 70%);
+                        animation: shimmerTopLeft 1.2s ease-out;
                         pointer-events: none;
                         z-index: 10;
+                        filter: blur(15px);
+                        border-radius: 50%;
                       `;
 
                       const shimmer2 = document.createElement('div');
                       shimmer2.style.cssText = `
                         position: absolute;
-                        bottom: -100%;
-                        right: -100%;
-                        width: 100%;
-                        height: 100%;
-                        background: linear-gradient(135deg, transparent 0%, rgba(255, 255, 255, 0.4) 50%, transparent 100%);
-                        animation: shimmerBottomRight 1s ease-out;
+                        bottom: -50%;
+                        right: -50%;
+                        width: 80%;
+                        height: 80%;
+                        background: radial-gradient(ellipse at center, rgba(255, 255, 255, 0.6) 0%, rgba(255, 255, 255, 0.3) 30%, transparent 70%);
+                        animation: shimmerBottomRight 1.2s ease-out;
                         pointer-events: none;
                         z-index: 10;
+                        filter: blur(15px);
+                        border-radius: 50%;
                       `;
 
                       const style = document.createElement('style');
                       style.textContent = `
                         @keyframes shimmerTopLeft {
-                          0% { transform: translate(0, 0); }
-                          100% { transform: translate(150%, 150%); }
+                          0% { transform: translate(0, 0); opacity: 0; }
+                          50% { opacity: 1; }
+                          100% { transform: translate(150%, 150%); opacity: 0; }
                         }
                         @keyframes shimmerBottomRight {
-                          0% { transform: translate(0, 0); }
-                          100% { transform: translate(-150%, -150%); }
+                          0% { transform: translate(0, 0); opacity: 0; }
+                          50% { opacity: 1; }
+                          100% { transform: translate(-150%, -150%); opacity: 0; }
                         }
                       `;
                       if (!document.querySelector('#shimmer-dual-animation')) {
@@ -603,31 +609,46 @@ export default function Home() {
                       const shimmer1 = document.createElement('div');
                       shimmer1.style.cssText = `
                         position: absolute;
-                        top: -100%;
-                        left: -100%;
-                        width: 100%;
-                        height: 100%;
-                        background: linear-gradient(135deg, transparent 0%, rgba(255, 255, 255, 0.4) 50%, transparent 100%);
-                        animation: shimmerTopLeft 1s ease-out;
+                        top: -50%;
+                        left: -50%;
+                        width: 80%;
+                        height: 80%;
+                        background: radial-gradient(ellipse at center, rgba(255, 255, 255, 0.6) 0%, rgba(255, 255, 255, 0.3) 30%, transparent 70%);
+                        animation: shimmerTopLeft 1.2s ease-out;
                         pointer-events: none;
                         z-index: 10;
+                        filter: blur(15px);
+                        border-radius: 50%;
                       `;
 
                       const shimmer2 = document.createElement('div');
                       shimmer2.style.cssText = `
                         position: absolute;
-                        bottom: -100%;
-                        right: -100%;
-                        width: 100%;
-                        height: 100%;
-                        background: linear-gradient(135deg, transparent 0%, rgba(255, 255, 255, 0.4) 50%, transparent 100%);
-                        animation: shimmerBottomRight 1s ease-out;
+                        bottom: -50%;
+                        right: -50%;
+                        width: 80%;
+                        height: 80%;
+                        background: radial-gradient(ellipse at center, rgba(255, 255, 255, 0.6) 0%, rgba(255, 255, 255, 0.3) 30%, transparent 70%);
+                        animation: shimmerBottomRight 1.2s ease-out;
                         pointer-events: none;
                         z-index: 10;
+                        filter: blur(15px);
+                        border-radius: 50%;
                       `;
 
                       const style = document.createElement('style');
                       style.textContent = `
+                        @keyframes shimmerTopLeft {
+                          0% { transform: translate(0, 0); opacity: 0; }
+                          50% { opacity: 1; }
+                          100% { transform: translate(150%, 150%); opacity: 0; }
+                        }
+                        @keyframes shimmerBottomRight {
+                          0% { transform: translate(0, 0); opacity: 0; }
+                          50% { opacity: 1; }
+                          100% { transform: translate(-150%, -150%); opacity: 0; }
+                        }
+                      `;
                         @keyframes shimmerTopLeft {
                           0% { transform: translate(0, 0); }
                           100% { transform: translate(150%, 150%); }
