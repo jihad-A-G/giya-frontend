@@ -35,7 +35,6 @@ const nextConfig: NextConfig = {
   generateEtags: true,
   // Experimental features for performance
   experimental: {
-    optimizeCss: true,
     optimizePackageImports: ['framer-motion', 'lucide-react'],
   },
   // Compiler optimizations
