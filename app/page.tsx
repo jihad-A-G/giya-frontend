@@ -248,16 +248,12 @@ export default function Home() {
             muted
             loop
             playsInline
-            preload="none"
-            className="absolute top-0 left-0 w-full h-full object-cover z-0"
-            style={{ willChange: 'auto' }}
+            className="absolute top-0 left-0 w-full h-full object-cover z-[1]"
           >
             <source src="/video1.mp4" type="video/mp4" />
             Your browser does not support the video tag.
           </video>
         )}
-        {/* Fallback background while video loads */}
-        <div className="absolute top-0 left-0 w-full h-full bg-gradient-to-br from-gray-900 to-gray-800 z-0" />
 
         {/* Dark Overlay */}
         <div className="absolute top-0 left-0 w-full h-full bg-black opacity-40 z-10"></div>
@@ -402,80 +398,51 @@ export default function Home() {
                     ref={(el) => {
                       if (el) cardRefs.current[index] = el;
                     }}
-                    className={`bg-white p-6 rounded-lg shadow-lg hover:shadow-xl transition-all duration-300 text-center transform ${
+                    className={`bg-white p-6 rounded-lg shadow-lg transition-all duration-500 text-center transform ${
                       visibleCards[index]
                         ? 'animate-pop-up opacity-100 scale-100'
                         : 'opacity-0 scale-95'
-                    } hover:scale-105`}
-                    whileHover={{ y: -10 }}
-                    style={{ position: 'relative', overflow: 'hidden', willChange: 'transform' }}
+                    }`}
+                    whileHover={{ y: -10, scale: 1.05 }}
+                    style={{
+                      position: 'relative',
+                      overflow: 'hidden',
+                      willChange: 'transform',
+                    }}
                     onMouseEnter={(e) => {
                       const target = e.currentTarget as HTMLElement;
-                      if (target.dataset.shimmered === 'animating') return;
-                      target.dataset.shimmered = 'animating';
-
-                      // Ensure style is only added once globally
-                      if (!document.querySelector('#shimmer-dual-animation')) {
-                        const style = document.createElement('style');
-                        style.id = 'shimmer-dual-animation';
-                        style.textContent = `
-                          @keyframes shimmerTopLeft {
-                            0% { transform: translate(0, 0); opacity: 0; }
-                            50% { opacity: 1; }
-                            100% { transform: translate(150%, 150%); opacity: 0; }
-                          }
-                          @keyframes shimmerBottomRight {
-                            0% { transform: translate(0, 0); opacity: 0; }
-                            50% { opacity: 1; }
-                            100% { transform: translate(-150%, -150%); opacity: 0; }
-                          }
-                        `;
-                        document.head.appendChild(style);
-                      }
-
-                      const shimmer1 = document.createElement('div');
-                      shimmer1.style.cssText = `
+                      const before = document.createElement('div');
+                      before.className = 'holographic-shine';
+                      before.style.cssText = `
+                        content: '';
                         position: absolute;
                         top: -50%;
                         left: -50%;
-                        width: 80%;
-                        height: 80%;
-                        background: radial-gradient(ellipse at center, rgba(255, 255, 255, 0.6) 0%, rgba(255, 255, 255, 0.3) 30%, transparent 70%);
-                        animation: shimmerTopLeft 1.2s ease-out;
+                        width: 200%;
+                        height: 200%;
+                        background: linear-gradient(0deg, transparent, transparent 30%, rgba(164, 90, 82, 0.3));
+                        transform: rotate(-45deg);
+                        transition: all 0.6s ease;
                         pointer-events: none;
-                        z-index: 10;
-                        filter: blur(15px);
-                        border-radius: 50%;
-                        will-change: transform, opacity;
+                        z-index: 5;
+                        opacity: 0;
                       `;
-
-                      const shimmer2 = document.createElement('div');
-                      shimmer2.style.cssText = `
-                        position: absolute;
-                        bottom: -50%;
-                        right: -50%;
-                        width: 80%;
-                        height: 80%;
-                        background: radial-gradient(ellipse at center, rgba(255, 255, 255, 0.6) 0%, rgba(255, 255, 255, 0.3) 30%, transparent 70%);
-                        animation: shimmerBottomRight 1.2s ease-out;
-                        pointer-events: none;
-                        z-index: 10;
-                        filter: blur(15px);
-                        border-radius: 50%;
-                        will-change: transform, opacity;
-                      `;
-
-                      target.appendChild(shimmer1);
-                      target.appendChild(shimmer2);
+                      target.appendChild(before);
                       
-                      // Use requestAnimationFrame for better performance
                       requestAnimationFrame(() => {
-                        setTimeout(() => {
-                          shimmer1.remove();
-                          shimmer2.remove();
-                          target.dataset.shimmered = '';
-                        }, 1200);
+                        before.style.opacity = '1';
+                        before.style.transform = 'rotate(-45deg) translateY(100%)';
                       });
+                      
+                      target.style.boxShadow = '0 0 20px rgba(164, 90, 82, 0.5)';
+                    }}
+                    onMouseLeave={(e) => {
+                      const target = e.currentTarget as HTMLElement;
+                      const shine = target.querySelector('.holographic-shine');
+                      if (shine) {
+                        shine.remove();
+                      }
+                      target.style.boxShadow = '';
                     }}
                   >
                     <div className="w-full h-48 rounded-lg mb-4 overflow-hidden relative">
@@ -618,80 +585,51 @@ export default function Home() {
                     ref={(el) => {
                       if (el) projectCardRefs.current[index] = el;
                     }}
-                    className={`bg-white rounded-lg shadow-lg transition-all duration-300 text-center transform overflow-hidden ${
+                    className={`bg-white rounded-lg shadow-lg transition-all duration-500 text-center transform overflow-hidden ${
                       visibleProjectCards[index]
                         ? 'animate-pop-up opacity-100 scale-100'
                         : 'opacity-0 scale-95'
                     }`}
-                    whileHover={{ y: -10 }}
-                    style={{ position: 'relative', willChange: 'transform' }}
+                    whileHover={{ y: -10, scale: 1.05 }}
+                    style={{
+                      position: 'relative',
+                      overflow: 'hidden',
+                      willChange: 'transform',
+                    }}
                     onMouseEnter={(e) => {
                       const target = e.currentTarget as HTMLElement;
-                      if (target.dataset.shimmered === 'animating') return;
-                      target.dataset.shimmered = 'animating';
-
-                      // Ensure style is only added once globally
-                      if (!document.querySelector('#shimmer-dual-animation')) {
-                        const style = document.createElement('style');
-                        style.id = 'shimmer-dual-animation';
-                        style.textContent = `
-                          @keyframes shimmerTopLeft {
-                            0% { transform: translate(0, 0); opacity: 0; }
-                            50% { opacity: 1; }
-                            100% { transform: translate(150%, 150%); opacity: 0; }
-                          }
-                          @keyframes shimmerBottomRight {
-                            0% { transform: translate(0, 0); opacity: 0; }
-                            50% { opacity: 1; }
-                            100% { transform: translate(-150%, -150%); opacity: 0; }
-                          }
-                        `;
-                        document.head.appendChild(style);
-                      }
-
-                      const shimmer1 = document.createElement('div');
-                      shimmer1.style.cssText = `
+                      const before = document.createElement('div');
+                      before.className = 'holographic-shine';
+                      before.style.cssText = `
+                        content: '';
                         position: absolute;
                         top: -50%;
                         left: -50%;
-                        width: 80%;
-                        height: 80%;
-                        background: radial-gradient(ellipse at center, rgba(255, 255, 255, 0.6) 0%, rgba(255, 255, 255, 0.3) 30%, transparent 70%);
-                        animation: shimmerTopLeft 1.2s ease-out;
+                        width: 200%;
+                        height: 200%;
+                        background: linear-gradient(0deg, transparent, transparent 30%, rgba(164, 90, 82, 0.3));
+                        transform: rotate(-45deg);
+                        transition: all 0.6s ease;
                         pointer-events: none;
-                        z-index: 10;
-                        filter: blur(15px);
-                        border-radius: 50%;
-                        will-change: transform, opacity;
+                        z-index: 5;
+                        opacity: 0;
                       `;
-
-                      const shimmer2 = document.createElement('div');
-                      shimmer2.style.cssText = `
-                        position: absolute;
-                        bottom: -50%;
-                        right: -50%;
-                        width: 80%;
-                        height: 80%;
-                        background: radial-gradient(ellipse at center, rgba(255, 255, 255, 0.6) 0%, rgba(255, 255, 255, 0.3) 30%, transparent 70%);
-                        animation: shimmerBottomRight 1.2s ease-out;
-                        pointer-events: none;
-                        z-index: 10;
-                        filter: blur(15px);
-                        border-radius: 50%;
-                        will-change: transform, opacity;
-                      `;
-
-                      target.appendChild(shimmer1);
-                      target.appendChild(shimmer2);
+                      target.appendChild(before);
                       
-                      // Use requestAnimationFrame for better performance
                       requestAnimationFrame(() => {
-                        setTimeout(() => {
-                          shimmer1.remove();
-                          shimmer2.remove();
-                          target.dataset.shimmered = '';
-                        }, 1200);
+                        before.style.opacity = '1';
+                        before.style.transform = 'rotate(-45deg) translateY(100%)';
                       });
+                      
+                      target.style.boxShadow = '0 0 20px rgba(164, 90, 82, 0.5)';
+                    }}
+                    onMouseLeave={(e) => {
+                      const target = e.currentTarget as HTMLElement;
+                      const shine = target.querySelector('.holographic-shine');
+                      if (shine) {
+                        shine.remove();
+                      }
+                      target.style.boxShadow = '';
                     }}
                   >
                     <Link href="/projects" className="relative group cursor-pointer block">
