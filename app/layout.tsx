@@ -23,7 +23,7 @@ const satisfy = Satisfy({
 });
 
 export const metadata: Metadata = {
-  metadataBase: new URL(process.env.NEXT_PUBLIC_SITE_URL || 'https://giya-frontend.vercel.app'),
+  metadataBase: new URL('https://giya-frontend.vercel.app'),
   title: {
     default: "Giya Enjoy Living - Premium Furniture Manufacturing & Interior Design",
     template: "%s | Giya Enjoy Living"
