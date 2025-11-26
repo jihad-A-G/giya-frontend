@@ -57,7 +57,6 @@ export default function Navbar() {
         "transition-shadow motion-reduce:transition-none",
       ].join(" ")}
       aria-label="Main"
-      style={{ pointerEvents: 'auto' }}
     >
       <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
         <div className="flex h-20 items-center justify-between">
@@ -72,8 +71,6 @@ export default function Navbar() {
               width={80}
               height={80}
               className="h-16 w-auto object-contain"
-              priority
-              loading="eager"
             />
           </Link>
 
@@ -85,6 +82,7 @@ export default function Navbar() {
                 <Link
                   key={item.path}
                   href={item.path}
+                  prefetch={true}
                   aria-current={active ? "page" : undefined}
                   className={[linkBase, active ? "after:scale-x-100 text-gray-300" : ""].join(" ")}
                   style={{ fontFamily: 'var(--font-satisfy)' }}
@@ -130,6 +128,7 @@ export default function Navbar() {
                 <Link
                   key={item.path}
                   href={item.path}
+                  prefetch={true}
                   aria-current={active ? "page" : undefined}
                   className={[linkBase, "h-12", active ? "after:scale-x-100 text-gray-300" : ""].join(" ")}
                   style={{ fontFamily: 'var(--font-satisfy)' }}

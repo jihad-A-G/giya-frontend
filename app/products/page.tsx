@@ -38,25 +38,6 @@ function ProductsContent() {
     { id: "custom", name: "Custom Furniture" }
   ];
 
-  const breadcrumbSchema = {
-    "@context": "https://schema.org",
-    "@type": "BreadcrumbList",
-    "itemListElement": [
-      {
-        "@type": "ListItem",
-        "position": 1,
-        "name": "Home",
-        "item": "https://giya-frontend.vercel.app"
-      },
-      {
-        "@type": "ListItem",
-        "position": 2,
-        "name": "Products",
-        "item": "https://giya-frontend.vercel.app/products"
-      }
-    ]
-  };
-
   useEffect(() => {
     // Check if there's a category parameter in the URL
     const categoryParam = searchParams.get('category');
@@ -152,12 +133,6 @@ function ProductsContent() {
 
   return (
     <div className="min-h-screen bg-gray-50 pt-20">
-      {/* JSON-LD Breadcrumb Schema */}
-      <script
-        type="application/ld+json"
-        dangerouslySetInnerHTML={{ __html: JSON.stringify(breadcrumbSchema) }}
-      />
-      
       {/* Hero Section */}
       <div className="relative py-20 overflow-hidden">
         {/* Background Image */}
@@ -247,8 +222,6 @@ function ProductsContent() {
                       src={`${API_URL}${product.image}`}
                       alt={product.name}
                       className="w-full h-full object-cover"
-                      loading={index < 4 ? "eager" : "lazy"}
-                      decoding="async"
                     />
                   </div>
 

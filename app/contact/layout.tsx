@@ -1,17 +1,15 @@
 import { Metadata } from 'next'
 
 export const metadata: Metadata = {
-  title: 'Contact Us - Get a Quote',
-  description: 'Contact Giya Enjoy Living for furniture inquiries, interior design consultations, and custom project quotes. Visit our showroom or schedule a factory tour. Free design consultation available.',
-  keywords: ['contact furniture store', 'furniture quote', 'design consultation', 'showroom visit', 'factory tour', 'furniture inquiry', 'get quote'],
+  title: 'Contact Us - Get a Quote | Giya Enjoy Living',
+  description: 'Contact Giya Enjoy Living for furniture inquiries, interior design consultations, and custom project quotes. Visit our showroom or schedule a factory tour.',
   openGraph: {
     title: 'Contact Us - Get a Quote | Giya Enjoy Living',
     description: 'Contact Giya Enjoy Living for furniture inquiries, interior design consultations, and custom project quotes.',
-    url: 'https://giya-frontend.vercel.app/contact',
-    type: 'website',
+    url: 'https://www.giyaenjoyliving.com/contact',
   },
   alternates: {
-    canonical: 'https://giya-frontend.vercel.app/contact',
+    canonical: 'https://www.giyaenjoyliving.com/contact',
   },
 }
 

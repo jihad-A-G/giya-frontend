@@ -2,6 +2,7 @@
 
 import React, { useState, useEffect } from "react";
 import { useParams, useRouter } from "next/navigation";
+import Image from "next/image";
 import Link from "next/link";
 import { motion } from "framer-motion";
 
@@ -21,32 +22,6 @@ interface Product {
   colors?: string[] | null;
   availability?: string | null;
   specifications?: Record<string, string> | null;
-}
-
-// Helper function to generate product JSON-LD
-function generateProductSchema(product: Product) {
-  return {
-    "@context": "https://schema.org",
-    "@type": "Product",
-    "name": product.name,
-    "description": product.description || `Premium ${product.name} from Giya Enjoy Living`,
-    "image": product.image ? `${API_URL}${product.image}` : undefined,
-    "brand": {
-      "@type": "Brand",
-      "name": "Giya Enjoy Living"
-    },
-    "offers": {
-      "@type": "Offer",
-      "price": product.price ? product.price.replace(/[^0-9.]/g, '') : undefined,
-      "priceCurrency": "USD",
-      "availability": product.availability === 'in-stock' ? "https://schema.org/InStock" : "https://schema.org/PreOrder",
-      "seller": {
-        "@type": "Organization",
-        "name": "Giya Enjoy Living"
-      }
-    },
-    "category": product.category,
-  };
 }
 
 export default function ProductDetail() {
@@ -153,14 +128,6 @@ export default function ProductDetail() {
 
   return (
     <div className="min-h-screen bg-gray-50 pt-20">
-      {/* JSON-LD Schema */}
-      {product && (
-        <script
-          type="application/ld+json"
-          dangerouslySetInnerHTML={{ __html: JSON.stringify(generateProductSchema(product)) }}
-        />
-      )}
-      
       {/* Back Button */}
       <div className="bg-white shadow-sm py-4">
         <div className="max-w-7xl mx-auto px-4">

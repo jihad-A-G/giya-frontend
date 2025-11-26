@@ -66,7 +66,6 @@ export default function Home() {
   const [featuredProducts, setFeaturedProducts] = useState<Product[]>([]);
   const [featuredProjects, setFeaturedProjects] = useState<Project[]>([]);
   const [loading, setLoading] = useState(true);
-  const [videoLoaded, setVideoLoaded] = useState(false);
   const [visibleCards, setVisibleCards] = useState([true, true, true]);
   const [visibleSection, setVisibleSection] = useState(true);
   const [visibleProjectCards, setVisibleProjectCards] = useState([true, true, true]);
@@ -231,23 +230,14 @@ export default function Home() {
   return (
     <div className="relative">
       {/* Hero Section with Video Background */}
-      <div className="relative min-h-screen overflow-hidden" style={{ backgroundColor: '#000' }}>
-        {/* Fallback background while video loads */}
-        {!videoLoaded && (
-          <div className="absolute top-0 left-0 w-full h-full bg-gradient-to-br from-gray-900 to-black z-0" />
-        )}
-        
+      <div className="relative min-h-screen overflow-hidden">
         {/* Background Video */}
         <video
           autoPlay
           muted
           loop
           playsInline
-          preload="auto"
           className="absolute top-0 left-0 w-full h-full object-cover z-0"
-          style={{ opacity: videoLoaded ? 1 : 0, transition: 'opacity 0.5s ease-in' }}
-          onLoadedData={() => setVideoLoaded(true)}
-          onCanPlay={() => setVideoLoaded(true)}
         >
           <source src="/video1.mp4" type="video/mp4" />
           Your browser does not support the video tag.
@@ -400,11 +390,30 @@ export default function Home() {
                         : 'opacity-0 scale-95'
                     } hover:scale-105`}
                     whileHover={{ y: -10 }}
-                    style={{ position: 'relative', overflow: 'hidden' }}
+                    style={{ position: 'relative', overflow: 'hidden', willChange: 'transform' }}
                     onMouseEnter={(e) => {
                       const target = e.currentTarget as HTMLElement;
-                      if (target.dataset.shimmered) return;
-                      target.dataset.shimmered = 'true';
+                      if (target.dataset.shimmered === 'animating') return;
+                      target.dataset.shimmered = 'animating';
+
+                      // Ensure style is only added once globally
+                      if (!document.querySelector('#shimmer-dual-animation')) {
+                        const style = document.createElement('style');
+                        style.id = 'shimmer-dual-animation';
+                        style.textContent = `
+                          @keyframes shimmerTopLeft {
+                            0% { transform: translate(0, 0); opacity: 0; }
+                            50% { opacity: 1; }
+                            100% { transform: translate(150%, 150%); opacity: 0; }
+                          }
+                          @keyframes shimmerBottomRight {
+                            0% { transform: translate(0, 0); opacity: 0; }
+                            50% { opacity: 1; }
+                            100% { transform: translate(-150%, -150%); opacity: 0; }
+                          }
+                        `;
+                        document.head.appendChild(style);
+                      }
 
                       const shimmer1 = document.createElement('div');
                       shimmer1.style.cssText = `
@@ -419,6 +428,7 @@ export default function Home() {
                         z-index: 10;
                         filter: blur(15px);
                         border-radius: 50%;
+                        will-change: transform, opacity;
                       `;
 
                       const shimmer2 = document.createElement('div');
@@ -434,37 +444,20 @@ export default function Home() {
                         z-index: 10;
                         filter: blur(15px);
                         border-radius: 50%;
+                        will-change: transform, opacity;
                       `;
-
-                      const style = document.createElement('style');
-                      style.textContent = `
-                        @keyframes shimmerTopLeft {
-                          0% { transform: translate(0, 0); opacity: 0; }
-                          50% { opacity: 1; }
-                          100% { transform: translate(150%, 150%); opacity: 0; }
-                        }
-                        @keyframes shimmerBottomRight {
-                          0% { transform: translate(0, 0); opacity: 0; }
-                          50% { opacity: 1; }
-                          100% { transform: translate(-150%, -150%); opacity: 0; }
-                        }
-                      `;
-                      if (!document.querySelector('#shimmer-dual-animation')) {
-                        style.id = 'shimmer-dual-animation';
-                        document.head.appendChild(style);
-                      }
 
                       target.appendChild(shimmer1);
                       target.appendChild(shimmer2);
                       
-                      setTimeout(() => {
-                        shimmer1.remove();
-                        shimmer2.remove();
-                      }, 1000);
-                    }}
-                    onMouseLeave={(e) => {
-                      const target = e.currentTarget as HTMLElement;
-                      delete target.dataset.shimmered;
+                      // Use requestAnimationFrame for better performance
+                      requestAnimationFrame(() => {
+                        setTimeout(() => {
+                          shimmer1.remove();
+                          shimmer2.remove();
+                          target.dataset.shimmered = '';
+                        }, 1200);
+                      });
                     }}
                   >
                     <div className="w-full h-48 rounded-lg mb-4 overflow-hidden relative">
@@ -610,11 +603,30 @@ export default function Home() {
                         : 'opacity-0 scale-95'
                     }`}
                     whileHover={{ y: -10 }}
-                    style={{ position: 'relative' }}
+                    style={{ position: 'relative', willChange: 'transform' }}
                     onMouseEnter={(e) => {
                       const target = e.currentTarget as HTMLElement;
-                      if (target.dataset.shimmered) return;
-                      target.dataset.shimmered = 'true';
+                      if (target.dataset.shimmered === 'animating') return;
+                      target.dataset.shimmered = 'animating';
+
+                      // Ensure style is only added once globally
+                      if (!document.querySelector('#shimmer-dual-animation')) {
+                        const style = document.createElement('style');
+                        style.id = 'shimmer-dual-animation';
+                        style.textContent = `
+                          @keyframes shimmerTopLeft {
+                            0% { transform: translate(0, 0); opacity: 0; }
+                            50% { opacity: 1; }
+                            100% { transform: translate(150%, 150%); opacity: 0; }
+                          }
+                          @keyframes shimmerBottomRight {
+                            0% { transform: translate(0, 0); opacity: 0; }
+                            50% { opacity: 1; }
+                            100% { transform: translate(-150%, -150%); opacity: 0; }
+                          }
+                        `;
+                        document.head.appendChild(style);
+                      }
 
                       const shimmer1 = document.createElement('div');
                       shimmer1.style.cssText = `
@@ -629,6 +641,7 @@ export default function Home() {
                         z-index: 10;
                         filter: blur(15px);
                         border-radius: 50%;
+                        will-change: transform, opacity;
                       `;
 
                       const shimmer2 = document.createElement('div');
@@ -644,37 +657,20 @@ export default function Home() {
                         z-index: 10;
                         filter: blur(15px);
                         border-radius: 50%;
+                        will-change: transform, opacity;
                       `;
-
-                      const style = document.createElement('style');
-                      style.textContent = `
-                        @keyframes shimmerTopLeft {
-                          0% { transform: translate(0, 0); opacity: 0; }
-                          50% { opacity: 1; }
-                          100% { transform: translate(150%, 150%); opacity: 0; }
-                        }
-                        @keyframes shimmerBottomRight {
-                          0% { transform: translate(0, 0); opacity: 0; }
-                          50% { opacity: 1; }
-                          100% { transform: translate(-150%, -150%); opacity: 0; }
-                        }
-                      `;
-                      if (!document.querySelector('#shimmer-dual-animation')) {
-                        style.id = 'shimmer-dual-animation';
-                        document.head.appendChild(style);
-                      }
 
                       target.appendChild(shimmer1);
                       target.appendChild(shimmer2);
                       
-                      setTimeout(() => {
-                        shimmer1.remove();
-                        shimmer2.remove();
-                      }, 1000);
-                    }}
-                    onMouseLeave={(e) => {
-                      const target = e.currentTarget as HTMLElement;
-                      delete target.dataset.shimmered;
+                      // Use requestAnimationFrame for better performance
+                      requestAnimationFrame(() => {
+                        setTimeout(() => {
+                          shimmer1.remove();
+                          shimmer2.remove();
+                          target.dataset.shimmered = '';
+                        }, 1200);
+                      });
                     }}
                   >
                     <Link href="/projects" className="relative group cursor-pointer block">
