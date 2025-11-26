@@ -2,28 +2,49 @@
 
 import { useEffect, useState } from "react";
 import Image from "next/image";
+import { usePathname } from "next/navigation";
 
 export default function LoadingScreen() {
   const [isLoading, setIsLoading] = useState(true);
+  const [isInitialLoad, setIsInitialLoad] = useState(true);
+  const pathname = usePathname();
 
   useEffect(() => {
+    // Only show loading screen on initial page load, not on navigation
+    if (!isInitialLoad) {
+      setIsLoading(false);
+      return;
+    }
+
     // Wait for critical resources to load
     const timer = setTimeout(() => {
       setIsLoading(false);
+      setIsInitialLoad(false);
     }, 1500);
 
     // Also check if document is ready
     if (document.readyState === 'complete') {
       setIsLoading(false);
+      setIsInitialLoad(false);
       clearTimeout(timer);
     } else {
       window.addEventListener('load', () => {
-        setTimeout(() => setIsLoading(false), 500);
+        setTimeout(() => {
+          setIsLoading(false);
+          setIsInitialLoad(false);
+        }, 500);
       });
     }
 
     return () => clearTimeout(timer);
   }, []);
+
+  // Hide loading screen on route changes after initial load
+  useEffect(() => {
+    if (!isInitialLoad) {
+      setIsLoading(false);
+    }
+  }, [pathname, isInitialLoad]);
 
   if (!isLoading) return null;
 
