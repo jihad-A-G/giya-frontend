@@ -6,5 +6,8 @@ Allow: /
 Disallow: /admin/
 Disallow: /api/
 
+# Crawl-delay (optional, helps prevent server overload)
+Crawl-delay: 1
+
 # Sitemap location
-Sitemap: https://www.giyaenjoyliving.com/sitemap.xml
+Sitemap: https://giya-frontend.vercel.app/sitemap.xml
