@@ -3,6 +3,7 @@ import { Geist, Geist_Mono, Satisfy } from "next/font/google";
 import "./globals.css";
 import Navbar from "@/components/Navbar";
 import Footer from "@/components/Footer";
+import LoadingScreen from "@/components/LoadingScreen";
 
 const geistSans = Geist({
   variable: "--font-geist-sans",
@@ -88,6 +89,7 @@ export default function RootLayout({
         />
       </head>
       <body className={`${geistSans.variable} ${geistMono.variable} ${satisfy.variable} antialiased`} suppressHydrationWarning={true}>
+        <LoadingScreen />
         <div className="flex min-h-screen">
           <div className="relative z-50">
             <Navbar />

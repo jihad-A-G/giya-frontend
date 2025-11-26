@@ -66,6 +66,7 @@ export default function Home() {
   const [featuredProducts, setFeaturedProducts] = useState<Product[]>([]);
   const [featuredProjects, setFeaturedProjects] = useState<Project[]>([]);
   const [loading, setLoading] = useState(true);
+  const [videoLoaded, setVideoLoaded] = useState(false);
   const [visibleCards, setVisibleCards] = useState([true, true, true]);
   const [visibleSection, setVisibleSection] = useState(true);
   const [visibleProjectCards, setVisibleProjectCards] = useState([true, true, true]);
@@ -230,14 +231,23 @@ export default function Home() {
   return (
     <div className="relative">
       {/* Hero Section with Video Background */}
-      <div className="relative min-h-screen overflow-hidden">
+      <div className="relative min-h-screen overflow-hidden" style={{ backgroundColor: '#000' }}>
+        {/* Fallback background while video loads */}
+        {!videoLoaded && (
+          <div className="absolute top-0 left-0 w-full h-full bg-gradient-to-br from-gray-900 to-black z-0" />
+        )}
+        
         {/* Background Video */}
         <video
           autoPlay
           muted
           loop
           playsInline
+          preload="auto"
           className="absolute top-0 left-0 w-full h-full object-cover z-0"
+          style={{ opacity: videoLoaded ? 1 : 0, transition: 'opacity 0.5s ease-in' }}
+          onLoadedData={() => setVideoLoaded(true)}
+          onCanPlay={() => setVideoLoaded(true)}
         >
           <source src="/video1.mp4" type="video/mp4" />
           Your browser does not support the video tag.
