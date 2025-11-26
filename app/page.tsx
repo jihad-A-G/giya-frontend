@@ -4,6 +4,7 @@ import { useState, useEffect, useRef } from "react";
 import Image from "next/image";
 import Link from "next/link";
 import { motion } from "framer-motion";
+import { ProductCardSkeleton, ProjectCardSkeleton } from "@/components/LoadingSkeleton";
 
 const API_URL = process.env.NEXT_PUBLIC_API_URL || 'http://localhost:5000';
 
@@ -66,6 +67,7 @@ export default function Home() {
   const [featuredProducts, setFeaturedProducts] = useState<Product[]>([]);
   const [featuredProjects, setFeaturedProjects] = useState<Project[]>([]);
   const [loading, setLoading] = useState(true);
+  const [pageReady, setPageReady] = useState(false);
   const [visibleCards, setVisibleCards] = useState([true, true, true]);
   const [visibleSection, setVisibleSection] = useState(true);
   const [visibleProjectCards, setVisibleProjectCards] = useState([true, true, true]);
@@ -73,22 +75,30 @@ export default function Home() {
   const sectionRef = useRef<HTMLDivElement | null>(null);
   const projectCardRefs = useRef<(HTMLDivElement | null)[]>([]);
 
+  // Mark page as ready immediately for critical content
+  useEffect(() => {
+    setPageReady(true);
+  }, []);
+
   useEffect(() => {
     const fetchFeaturedData = async () => {
       try {
         console.log('Fetching featured data...');
         
-        // Fetch products
-        const productsResponse = await fetch('/api/products');
+        // Fetch in parallel for better performance
+        const [productsResponse, projectsResponse] = await Promise.all([
+          fetch('/api/products', { cache: 'no-store' }),
+          fetch('/api/projects', { cache: 'no-store' })
+        ]);
+        
         console.log('Products response status:', productsResponse.status);
+        console.log('Projects response status:', projectsResponse.status);
         
         if (productsResponse.ok) {
           const productsData = await productsResponse.json();
           console.log('Products data length:', productsData.length);
-          console.log('Products data:', JSON.stringify(productsData, null, 2));
           
           if (productsData && productsData.length > 0) {
-            // Parse features and take first 3 products
             const parsedProducts = productsData.slice(0, 3).map((product: Product) => {
               try {
                 // eslint-disable-next-line @typescript-eslint/no-explicit-any
@@ -107,7 +117,6 @@ export default function Home() {
               }
             });
             console.log('Parsed products count:', parsedProducts.length);
-            console.log('Setting featured products:', JSON.stringify(parsedProducts, null, 2));
             setFeaturedProducts(parsedProducts);
           } else {
             console.log('No products data received');
@@ -115,20 +124,13 @@ export default function Home() {
           }
         }
 
-        // Fetch projects
-        const projectsResponse = await fetch('/api/projects');
-        console.log('Projects response status:', projectsResponse.status);
-        
         if (projectsResponse.ok) {
           const projectsData = await projectsResponse.json();
           console.log('Projects data length:', projectsData.length);
-          console.log('Projects data:', JSON.stringify(projectsData, null, 2));
           
           if (projectsData && projectsData.length > 0) {
-            // Take first 3 projects
             const featuredProjectsData = projectsData.slice(0, 3);
             console.log('Featured projects count:', featuredProjectsData.length);
-            console.log('Setting featured projects:', JSON.stringify(featuredProjectsData, null, 2));
             setFeaturedProjects(featuredProjectsData);
           } else {
             console.log('No projects data received');
@@ -142,7 +144,12 @@ export default function Home() {
       }
     };
 
-    fetchFeaturedData();
+    // Defer API calls to not block initial render
+    const timer = setTimeout(() => {
+      fetchFeaturedData();
+    }, 100);
+    
+    return () => clearTimeout(timer);
   }, []);
 
   // Debug useEffect
@@ -231,17 +238,26 @@ export default function Home() {
     <div className="relative">
       {/* Hero Section with Video Background */}
       <div className="relative min-h-screen overflow-hidden">
+        {/* Fallback background while video loads */}
+        <div className="absolute top-0 left-0 w-full h-full bg-gradient-to-br from-gray-900 via-gray-800 to-black z-0" />
+        
         {/* Background Video */}
-        <video
-          autoPlay
-          muted
-          loop
-          playsInline
-          className="absolute top-0 left-0 w-full h-full object-cover z-0"
-        >
-          <source src="/video1.mp4" type="video/mp4" />
-          Your browser does not support the video tag.
-        </video>
+        {pageReady && (
+          <video
+            autoPlay
+            muted
+            loop
+            playsInline
+            preload="none"
+            className="absolute top-0 left-0 w-full h-full object-cover z-0"
+            style={{ willChange: 'auto' }}
+          >
+            <source src="/video1.mp4" type="video/mp4" />
+            Your browser does not support the video tag.
+          </video>
+        )}
+        {/* Fallback background while video loads */}
+        <div className="absolute top-0 left-0 w-full h-full bg-gradient-to-br from-gray-900 to-gray-800 z-0" />
 
         {/* Dark Overlay */}
         <div className="absolute top-0 left-0 w-full h-full bg-black opacity-40 z-10"></div>
@@ -368,8 +384,10 @@ export default function Home() {
           </motion.div>
 
           {loading ? (
-            <div className="flex justify-center items-center py-12">
-              <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-[#a45a52]"></div>
+            <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
+              <ProductCardSkeleton />
+              <ProductCardSkeleton />
+              <ProductCardSkeleton />
             </div>
           ) : (
             <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
@@ -555,6 +573,7 @@ export default function Home() {
                 muted
                 loop
                 playsInline
+                preload="metadata"
                 className="w-full h-64 md:h-80 rounded-lg shadow-lg object-cover"
               >
                 <source src="/video2.mp4" type="video/mp4" />
@@ -581,8 +600,10 @@ export default function Home() {
           </motion.div>
 
           {loading ? (
-            <div className="flex justify-center items-center py-12">
-              <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-[#a45a52]"></div>
+            <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
+              <ProjectCardSkeleton />
+              <ProjectCardSkeleton />
+              <ProjectCardSkeleton />
             </div>
           ) : (
             <div className="grid grid-cols-1 md:grid-cols-3 gap-8">

@@ -64,6 +64,7 @@ export default function Navbar() {
           <Link
             href="/"
             className="inline-flex items-center focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-white"
+            prefetch={true}
           >
             <Image
               src="/logo.png"
@@ -71,6 +72,8 @@ export default function Navbar() {
               width={80}
               height={80}
               className="h-16 w-auto object-contain"
+              priority
+              loading="eager"
             />
           </Link>
 
