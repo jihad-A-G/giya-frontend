@@ -92,9 +92,28 @@ export default function ProductDetail() {
     );
   }
 
-  const displayImages = product.images && Array.isArray(product.images) && product.images.length > 0 
-    ? product.images.map(img => `${API_URL}${img}`)
-    : product.image ? [`${API_URL}${product.image}`] : [];
+  const displayImages = (() => {
+    const images: string[] = [];
+    
+    // Add main image first if it exists
+    if (product.image) {
+      images.push(`${API_URL}${product.image}`);
+    }
+    
+    // Add gallery images if they exist
+    if (product.images && Array.isArray(product.images) && product.images.length > 0) {
+      product.images.forEach(img => {
+        const fullPath = `${API_URL}${img}`;
+        // Avoid duplicates if main image is also in gallery
+        if (!images.includes(fullPath)) {
+          images.push(fullPath);
+        }
+      });
+    }
+    
+    return images;
+  })();
+  
   const availabilityColors = {
     'in-stock': 'text-green-600',
     'out-of-stock': 'text-red-600',
