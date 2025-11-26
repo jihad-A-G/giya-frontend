@@ -659,15 +659,6 @@ export default function Home() {
                           100% { transform: translate(-150%, -150%); opacity: 0; }
                         }
                       `;
-                        @keyframes shimmerTopLeft {
-                          0% { transform: translate(0, 0); }
-                          100% { transform: translate(150%, 150%); }
-                        }
-                        @keyframes shimmerBottomRight {
-                          0% { transform: translate(0, 0); }
-                          100% { transform: translate(-150%, -150%); }
-                        }
-                      `;
                       if (!document.querySelector('#shimmer-dual-animation')) {
                         style.id = 'shimmer-dual-animation';
                         document.head.appendChild(style);
