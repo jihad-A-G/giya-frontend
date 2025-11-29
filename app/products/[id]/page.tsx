@@ -2,10 +2,8 @@
 
 import React, { useState, useEffect } from "react";
 import { useParams, useRouter } from "next/navigation";
-import Image from "next/image";
 import Link from "next/link";
 import { motion } from "framer-motion";
-import Head from "next/head";
 
 const API_URL = process.env.NEXT_PUBLIC_API_URL || 'http://localhost:5000';
 
@@ -331,7 +329,7 @@ export default function ProductDetail() {
                     <Link href="/products" className="text-[#a45a52] hover:underline font-medium">
                       our full collection
                     </Link>
-                    . See how we've styled similar pieces in our{" "}
+                    . See how we&apos;ve styled similar pieces in our{" "}
                     <Link href="/projects" className="text-[#a45a52] hover:underline font-medium">
                       completed projects
                     </Link>.
