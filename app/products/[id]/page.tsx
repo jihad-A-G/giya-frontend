@@ -5,6 +5,7 @@ import { useParams, useRouter } from "next/navigation";
 import Image from "next/image";
 import Link from "next/link";
 import { motion } from "framer-motion";
+import Head from "next/head";
 
 const API_URL = process.env.NEXT_PUBLIC_API_URL || 'http://localhost:5000';
 
@@ -126,8 +127,98 @@ export default function ProductDetail() {
     'pre-order': 'Pre-Order',
   };
 
+  // Generate Product Schema based on product data
+  const generateProductSchema = () => {
+    if (!product) return null;
+
+    const schema = {
+      "@context": "https://schema.org",
+      "@type": "Product",
+      "name": product.name,
+      "description": product.description || `${product.name} - Premium furniture by Giya Enjoy Living`,
+      "brand": {
+        "@type": "Brand",
+        "name": "Giya Enjoy Living"
+      },
+      "image": displayImages.length > 0 ? displayImages : undefined,
+      "offers": {
+        "@type": "Offer",
+        "url": `${typeof window !== 'undefined' ? window.location.href : ''}`,
+        "priceCurrency": "USD",
+        "price": product.price ? parseFloat(product.price.replace(/[^0-9.]/g, '')) : undefined,
+        "availability": product.availability === 'in-stock' 
+          ? "https://schema.org/InStock" 
+          : product.availability === 'out-of-stock'
+          ? "https://schema.org/OutOfStock"
+          : "https://schema.org/PreOrder",
+        "seller": {
+          "@type": "Organization",
+          "name": "Giya Enjoy Living"
+        }
+      },
+      "category": product.category || "Furniture",
+      "sku": product._id
+    };
+
+    // Remove undefined fields
+    return JSON.parse(JSON.stringify(schema));
+  };
+
+  // Generate Breadcrumb Schema
+  const generateBreadcrumbSchema = () => {
+    if (!product) return null;
+
+    const baseUrl = typeof window !== 'undefined' ? window.location.origin : 'https://giya-frontend.vercel.app';
+
+    const breadcrumbSchema = {
+      "@context": "https://schema.org",
+      "@type": "BreadcrumbList",
+      "itemListElement": [
+        {
+          "@type": "ListItem",
+          "position": 1,
+          "name": "Home",
+          "item": baseUrl
+        },
+        {
+          "@type": "ListItem",
+          "position": 2,
+          "name": "Products",
+          "item": `${baseUrl}/products`
+        },
+        {
+          "@type": "ListItem",
+          "position": 3,
+          "name": product.name,
+          "item": `${baseUrl}/products/${product._id}`
+        }
+      ]
+    };
+
+    return breadcrumbSchema;
+  };
+
+  const productSchema = generateProductSchema();
+  const breadcrumbSchema = generateBreadcrumbSchema();
+
   return (
     <div className="min-h-screen bg-gray-50 pt-20">
+      {/* Product Schema Markup */}
+      {productSchema && (
+        <script
+          type="application/ld+json"
+          dangerouslySetInnerHTML={{ __html: JSON.stringify(productSchema) }}
+        />
+      )}
+
+      {/* Breadcrumb Schema Markup */}
+      {breadcrumbSchema && (
+        <script
+          type="application/ld+json"
+          dangerouslySetInnerHTML={{ __html: JSON.stringify(breadcrumbSchema) }}
+        />
+      )}
+
       {/* Back Button */}
       <div className="bg-white shadow-sm py-4">
         <div className="max-w-7xl mx-auto px-4">
@@ -228,7 +319,25 @@ export default function ProductDetail() {
               </div>
 
               {/* Description */}
-              {product.description && <p className="text-gray-600 text-lg mb-8 leading-relaxed">{product.description}</p>}
+              {product.description && (
+                <div className="text-gray-600 text-lg mb-8 leading-relaxed">
+                  <p className="mb-4">{product.description}</p>
+                  <p className="text-sm text-gray-500">
+                    Need help choosing the right piece? Explore our{" "}
+                    <Link href="/services" className="text-[#a45a52] hover:underline font-medium">
+                      interior design services
+                    </Link>
+                    {" "}or browse{" "}
+                    <Link href="/products" className="text-[#a45a52] hover:underline font-medium">
+                      our full collection
+                    </Link>
+                    . See how we've styled similar pieces in our{" "}
+                    <Link href="/projects" className="text-[#a45a52] hover:underline font-medium">
+                      completed projects
+                    </Link>.
+                  </p>
+                </div>
+              )}
 
               {/* Size Selection */}
               {product.sizes && Array.isArray(product.sizes) && product.sizes.length > 0 && (
@@ -346,7 +455,13 @@ export default function ProductDetail() {
             <div>
               <div className="text-4xl mb-4">💬</div>
               <h3 className="text-xl font-semibold mb-2">Expert Support</h3>
-              <p className="text-gray-300">Our team is here to help you</p>
+              <p className="text-gray-300">
+                Our team is here to help you.{" "}
+                <Link href="/contact" className="text-yellow-300 hover:underline">
+                  Contact us
+                </Link>
+                {" "}for personalized assistance.
+              </p>
             </div>
           </div>
         </div>

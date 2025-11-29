@@ -98,6 +98,26 @@ export default function Services() {
 
   const activeService = services.find(service => service._id === activeTab) || services[0];
 
+  // Generate Breadcrumb Schema for Services page
+  const breadcrumbSchema = {
+    "@context": "https://schema.org",
+    "@type": "BreadcrumbList",
+    "itemListElement": [
+      {
+        "@type": "ListItem",
+        "position": 1,
+        "name": "Home",
+        "item": typeof window !== 'undefined' ? window.location.origin : 'https://giya-frontend.vercel.app'
+      },
+      {
+        "@type": "ListItem",
+        "position": 2,
+        "name": "Services",
+        "item": typeof window !== 'undefined' ? window.location.href : 'https://giya-frontend.vercel.app/services'
+      }
+    ]
+  };
+
   if (loading) {
     return (
       <div className="min-h-screen bg-gray-50 pt-20 flex items-center justify-center">
@@ -127,6 +147,12 @@ export default function Services() {
 
   return (
     <div className="min-h-screen bg-gray-50 pt-20">
+      {/* Breadcrumb Schema Markup */}
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{ __html: JSON.stringify(breadcrumbSchema) }}
+      />
+
       {/* Hero Section */}
       <div className="py-16" style={{ background: `linear-gradient(to right, #a45a52, #8a4a44)` }}>
         <div className="max-w-7xl mx-auto px-4 text-center">
@@ -348,6 +374,14 @@ export default function Services() {
             <h2 className="text-4xl font-bold text-white mb-6">Ready to Get Started?</h2>
             <p className="text-xl text-white mb-8 max-w-2xl mx-auto">
               Contact us today to discuss your project requirements and discover how we can bring your vision to life.
+              Browse our{" "}
+              <Link href="/products" className="underline hover:text-yellow-300 font-semibold">
+                furniture collection
+              </Link>
+              {" "}or view our{" "}
+              <Link href="/projects" className="underline hover:text-yellow-300 font-semibold">
+                portfolio of completed projects
+              </Link>.
             </p>
             <div className="flex gap-4 justify-center">
               <Link href="/contact" className="bg-white px-8 py-3 rounded-md font-semibold hover:bg-gray-100 transition-colors duration-200" style={{ color: '#a45a52' }}>

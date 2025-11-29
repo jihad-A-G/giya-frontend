@@ -4,6 +4,7 @@ import "./globals.css";
 import Navbar from "@/components/Navbar";
 import Footer from "@/components/Footer";
 import NavigationProgress from "@/components/NavigationProgress";
+import GoogleAnalytics from "@/components/GoogleAnalytics";
 
 const geistSans = Geist({
   variable: "--font-geist-sans",
@@ -69,14 +70,32 @@ export default function RootLayout({
     "description": "Premium furniture manufacturing, interior design projects, and showroom",
     "url": "https://www.giyaenjoyliving.com",
     "logo": "https://www.giyaenjoyliving.com/logo.png",
+    "telephone": "+961-76-395-539",
     "address": {
       "@type": "PostalAddress",
-      "addressCountry": "US"
+      "streetAddress": "77XM+PJ3, Main Road",
+      "addressLocality": "Abbasiyyeh",
+      "addressCountry": "LB"
     },
+    "openingHoursSpecification": [
+      {
+        "@type": "OpeningHoursSpecification",
+        "dayOfWeek": [
+          "Monday",
+          "Tuesday",
+          "Wednesday",
+          "Thursday",
+          "Friday",
+          "Saturday"
+        ],
+        "opens": "08:00",
+        "closes": "17:00"
+      }
+    ],
     "sameAs": [
       // Add your social media URLs here when available
       // "https://www.facebook.com/giyaenjoyliving",
-      // "https://www.instagram.com/giyaenjoyliving",
+      "https://www.instagram.com/giyaenjoyliving/"
     ]
   };
 
@@ -89,6 +108,7 @@ export default function RootLayout({
         />
       </head>
       <body className={`${geistSans.variable} ${geistMono.variable} ${satisfy.variable} antialiased`} suppressHydrationWarning={true}>
+        <GoogleAnalytics />
         <NavigationProgress />
         <div className="flex min-h-screen">
           <div className="relative z-50">

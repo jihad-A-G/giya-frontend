@@ -62,13 +62,18 @@ const Footer: React.FC = () => {
                 </Link>
               </li>
               <li>
-                <Link href="/services" className="text-gray-400 hover:text-white transition-colors duration-200">
-                  Services
+                <Link href="/products" className="text-gray-400 hover:text-white transition-colors duration-200">
+                  Products
                 </Link>
               </li>
               <li>
-                <Link href="/about" className="text-gray-400 hover:text-white transition-colors duration-200">
-                  About Us
+                <Link href="/projects" className="text-gray-400 hover:text-white transition-colors duration-200">
+                  Projects
+                </Link>
+              </li>
+              <li>
+                <Link href="/services" className="text-gray-400 hover:text-white transition-colors duration-200">
+                  Services
                 </Link>
               </li>
               <li>
@@ -110,10 +115,11 @@ const Footer: React.FC = () => {
           <div className="col-span-1 md:col-span-1">
             <h4 className="text-lg font-semibold mb-4">Contact Us</h4>
             <div className="space-y-2 text-gray-400">
-              <p>📞 +123 456 7890</p>
+              <p>📞 +961-76-395-539</p>
               <p>✉️ info@giyaenjoyliving.com</p>
-              <p>📍 123 Furniture Avenue, Design District</p>
-              <p>🕒 Mon-Sat: 9AM-7PM</p>
+              <p>📍 77XM+PJ3, Main Road, Abbasiyyeh</p>
+              <p>🕒 Mon-Sat: 8AM-5PM</p>
+              <p>🕒 Sunday: Closed</p>
             </div>
           </div>
         </div>

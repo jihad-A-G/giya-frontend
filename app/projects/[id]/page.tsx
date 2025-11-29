@@ -82,8 +82,50 @@ export default function ProjectDetail() {
     ? project.images.map(img => `${API_URL}${img}`)
     : [`${API_URL}${project.image}`];
 
+  // Generate Breadcrumb Schema
+  const generateBreadcrumbSchema = () => {
+    if (!project) return null;
+
+    const baseUrl = typeof window !== 'undefined' ? window.location.origin : 'https://giya-frontend.vercel.app';
+
+    return {
+      "@context": "https://schema.org",
+      "@type": "BreadcrumbList",
+      "itemListElement": [
+        {
+          "@type": "ListItem",
+          "position": 1,
+          "name": "Home",
+          "item": baseUrl
+        },
+        {
+          "@type": "ListItem",
+          "position": 2,
+          "name": "Projects",
+          "item": `${baseUrl}/projects`
+        },
+        {
+          "@type": "ListItem",
+          "position": 3,
+          "name": project.title,
+          "item": `${baseUrl}/projects/${project._id}`
+        }
+      ]
+    };
+  };
+
+  const breadcrumbSchema = generateBreadcrumbSchema();
+
   return (
     <div className="min-h-screen bg-gray-50 pt-20">
+      {/* Breadcrumb Schema Markup */}
+      {breadcrumbSchema && (
+        <script
+          type="application/ld+json"
+          dangerouslySetInnerHTML={{ __html: JSON.stringify(breadcrumbSchema) }}
+        />
+      )}
+
       {/* Back Button */}
       <div className="bg-white border-b">
         <div className="max-w-7xl mx-auto px-4 py-4">
@@ -221,7 +263,18 @@ export default function ProjectDetail() {
               {/* Description */}
               <div className="mb-8">
                 <h2 className="text-2xl font-bold text-gray-800 mb-4">Project Overview</h2>
-                <p className="text-gray-600 leading-relaxed">{project.description}</p>
+                <p className="text-gray-600 leading-relaxed mb-4">{project.description}</p>
+                <p className="text-sm text-gray-500">
+                  Interested in a similar project?{" "}
+                  <Link href="/services" className="text-[#a45a52] hover:underline font-medium">
+                    Explore our services
+                  </Link>
+                  {" "}or browse{" "}
+                  <Link href="/products" className="text-[#a45a52] hover:underline font-medium">
+                    furniture options
+                  </Link>
+                  {" "}to bring your vision to life.
+                </p>
               </div>
 
               {/* Services Provided */}
